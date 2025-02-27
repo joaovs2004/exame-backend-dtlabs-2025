@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlmodel import select
 
 from app.auth_utils import authenticate_user, create_access_token, get_password_hash
@@ -9,8 +9,8 @@ from app.db import session
 from app.db.models import User
 
 class NewUser(BaseModel):
-    name: str
-    password: str
+    name: str = Field(min_length=3)
+    password: str = Field(min_length=3)
 
 class Token(BaseModel):
     access_token: str
