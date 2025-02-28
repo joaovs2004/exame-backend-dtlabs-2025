@@ -3,15 +3,16 @@ from fastapi import APIRouter, Query
 
 from app.db import session
 from app.models.data_models import Data, QueryParameters
-from app.services.data_services import create_sensor_data
+from app.services.data_services import create_sensor_data, get_sensor_data
 
 router = APIRouter()
 
 @router.post("/data", tags=["data"])
-def send_data(data: Data, session: session.SessionDep):
+async def send_data(data: Data, session: session.SessionDep):
     create_sensor_data(data, session)
     return {"message": "Sensor data created"}
 
 @router.get("/data", tags=["data"])
-def get_data(queryParameters: Annotated[QueryParameters, Query()]):
-    return {"message": "ok"}
+async def get_data(query_parameters: Annotated[QueryParameters, Query()], session: session.SessionDep):
+    sensor_data = get_sensor_data(query_parameters, session)
+    return sensor_data

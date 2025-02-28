@@ -1,3 +1,4 @@
+from enum import Enum
 from pydantic import BaseModel, model_validator
 from datetime import datetime
 from typing import Optional
@@ -17,9 +18,27 @@ class Data(BaseModel):
 
         return self
 
+class Aggregation(str, Enum):
+    minute = "minute"
+    hour = "hour"
+    day = "day"
+
+class SensorTypes(str, Enum):
+    temperature = "temperature"
+    humidity = "humidity"
+    voltage = "voltage"
+    current = "current"
+
 class QueryParameters(BaseModel):
-    server_ulid: Optional[str]
-    start_time: Optional[datetime]
-    end_time: Optional[datetime]
-    sensor_type: Optional[str]
-    aggregation: Optional[str]
+    server_ulid: Optional[str] = None
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
+    sensor_type: Optional[SensorTypes] = None
+    aggregation: Optional[Aggregation] = None
+
+    @model_validator(mode="after")
+    def validate_query_parameters(self):
+        if self.start_time is not None and self.end_time is None:
+            raise ValueError("end_time must be provided when start_time is specified")
+
+        return self
