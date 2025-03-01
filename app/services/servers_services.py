@@ -11,3 +11,5 @@ def create_new_server(new_server: NewServer, session: session.SessionDep):
         name=new_server.name,
     ))
     session.commit()
+
+    return server_ulid

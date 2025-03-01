@@ -9,10 +9,9 @@ from app.db.models import User
 from app.models.auth_models import NewUser, Token
 
 router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @router.post("/auth/register", tags=["auth"])
-def register_user(new_user: NewUser, session: session.SessionDep):
+async def register_user(new_user: NewUser, session: session.SessionDep):
     user_in_db = session.exec(select(User).where(User.name == new_user.name)).first()
 
     if user_in_db:
@@ -24,7 +23,7 @@ def register_user(new_user: NewUser, session: session.SessionDep):
     return {"message": "User created"}
 
 @router.post("/auth/login", tags=["auth"])
-def login(
+async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: session.SessionDep
 ):

@@ -7,7 +7,7 @@ class User(SQLModel, table=True):
     password: str | None = Field(default=None, index=True)
 
 class Server(SQLModel, table=True):
-    server_id: str = Field(index=True, primary_key=True)
+    server_id: str = Field(default=None, index=True, primary_key=True)
     name: str = Field(default=None, index=True)
 
 class SensorData(SQLModel, table=True):
