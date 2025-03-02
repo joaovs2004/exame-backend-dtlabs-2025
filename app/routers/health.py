@@ -10,10 +10,17 @@ router = APIRouter()
 
 @router.get("/health/all", tags=["health"])
 def get_all_server_health(user: Annotated[User, Depends(get_current_user)], session: session.SessionDep):
+    """
+    Endpoint to get information on the status of all servers. Authentication required
+    """
     response = get_all_health(session)
     return response
 
 @router.get("/health/{server_id}", tags=["health"])
 def get_server_health(server_id: str, user: Annotated[User, Depends(get_current_user)], session: session.SessionDep):
+    """
+    Endpoint to get information about the status of a specific server. You must provide the server id.
+    Authentication required
+    """
     response = get_server_health_by_id(server_id, session)
     return response

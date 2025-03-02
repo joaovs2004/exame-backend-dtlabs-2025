@@ -12,6 +12,9 @@ router = APIRouter()
 
 @router.post("/auth/register", tags=["auth"])
 async def register_user(new_user: NewUser, session: session.SessionDep):
+    """
+    Endpoint for user creation. After the user is created you can use the login endpoint to obtain a jwt token
+    """
     user_in_db = session.exec(select(User).where(User.name == new_user.name)).first()
 
     if user_in_db:
@@ -27,6 +30,9 @@ async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: session.SessionDep
 ):
+    """
+        Endpoint to get the token needed for authentication
+    """
     user = authenticate_user(session, form_data.username, form_data.password)
 
     if not user:

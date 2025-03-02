@@ -11,14 +11,20 @@ router = APIRouter()
 
 @router.post("/data", tags=["data"])
 async def send_data(data: Data, session: session.SessionDep):
+    """
+    Endpoint for sending sensor data. No authentication required
+    """
     create_sensor_data(data, session)
     return {"message": "Sensor data created"}
 
 @router.get("/data", tags=["data"])
 async def get_data(
-    user: Annotated[User, Depends(get_current_user)],
-    query_parameters: Annotated[QueryParameters, Query()],
-    session: session.SessionDep
+        user: Annotated[User, Depends(get_current_user)],
+        query_parameters: Annotated[QueryParameters, Query()],
+        session: session.SessionDep
     ):
+    """
+    Endpoint for getting sensor data. Authentication required
+    """
     sensor_data = get_sensor_data(query_parameters, session)
     return sensor_data

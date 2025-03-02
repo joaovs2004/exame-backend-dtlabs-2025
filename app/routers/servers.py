@@ -15,6 +15,9 @@ async def create_server(
     new_server: NewServer,
     session: session.SessionDep
     ):
+    """
+    Endpoint to create new servers. Authentication required
+    """
     server_ulid = create_new_server(new_server, session)
     return {
         "server_name": new_server.name,
