@@ -55,3 +55,4 @@ A seguir, serão descritos os endpoints necessários para serem implementados e 
     docker compose up
 4. Acesse localhost:8000/docs para testar a Api
 
+Os testes serão rodados automaticamente
